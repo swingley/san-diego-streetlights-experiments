@@ -31,13 +31,22 @@ app.use(express.static('public'))
 app.get('/temperatures', function (request, response) {
   response.sendFile(`${__dirname}/views/temperatures.html`)
 })
+app.get('/temperatures/:file', function (request, response) {
+  response.sendFile(`${__dirname}/public/${request.params.file}`)
+})
 
 app.get('/browse-assets', function (request, response) {
   response.sendFile(`${__dirname}/views/browse-assets.html`)
 })
+app.get('/browse-assets/:file', function (request, response) {
+  response.sendFile(`${__dirname}/public/${request.params.file}`)
+})
 
 app.get('/browse-locations', function (request, response) {
   response.sendFile(`${__dirname}/views/browse-locations.html`)
+})
+app.get('/browse-locations/:file', function (request, response) {
+  response.sendFile(`${__dirname}/public/${request.params.file}`)
 })
 
 app.get('/', function (request, response) {
