@@ -94,7 +94,8 @@ const getEvents = async function({
   start,
   stop,
   timezoneOffset,
-  token
+  token,
+  pageSize = PAGE_SIZE
 }) {
   let path
   let query = {}
@@ -152,7 +153,7 @@ const getEvents = async function({
 
   query.startTime = start.getTime()
   query.endTime = stop.getTime()
-  query.pageSize = PAGE_SIZE
+  query.pageSize = pageSize
   const queryString = new URLSearchParams(query).toString()
   const url = `${eventservice}${path}${queryString}`
   console.log(`getEvents:  ${url}`)
@@ -160,16 +161,16 @@ const getEvents = async function({
   let response = await request(url, makeHeaders(token, zone))
   if (response.content) {
     response.content = response.content.map(event => convert(event))
-    if (utcDifference) {
-      // add a readable timestamp as "when"
-      response.content = response.content.map(event => {
-        if (event.timestamp) {
-          // event.timestamp += utcDifference
-          event.when = format(new Date(event.timestamp), 'yyyy-MM-dd hh:mm:ss a')
-        }
-        return event
-      })
-    }
+    // if (utcDifference) {
+    //   // add a readable timestamp as "when"
+    //   response.content = response.content.map(event => {
+    //     if (event.timestamp) {
+    //       // event.timestamp += utcDifference
+    //       event.when = format(new Date(event.timestamp), 'yyyy-MM-dd hh:mm:ss a')
+    //     }
+    //     return event
+    //   })
+    // }
     if (type === 'TEMPERATURE') {
       // do some extra formatting so download as .csv works
       response.content = response.content.map(event => {
@@ -189,7 +190,7 @@ const getEvents = async function({
       })
     }
   }
-  // logResponseMetadata(response)
+  logResponseMetadata(response)
   return response.content
 }
 
