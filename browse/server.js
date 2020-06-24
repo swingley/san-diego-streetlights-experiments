@@ -28,11 +28,7 @@ const locationTypeToZone = {
 app.use(favicon(path.join(__dirname, 'public', 'favicon.svg')))
 app.use(express.static('public'))
 
-app.get('/', function (request, response) {
-  response.sendFile(`${__dirname}/views/index.html`)
-})
-
-app.get('/temperatures/', function (request, response) {
+app.get('/temperatures', function (request, response) {
   response.sendFile(`${__dirname}/views/temperatures.html`)
 })
 
@@ -42,6 +38,10 @@ app.get('/browse-assets', function (request, response) {
 
 app.get('/browse-locations', function (request, response) {
   response.sendFile(`${__dirname}/views/browse-locations.html`)
+})
+
+app.get('/', function (request, response) {
+  response.sendFile(`${__dirname}/views/index.html`)
 })
 
 // tokenMiddleware takes care of retrieving and ensuring a token isn't expirted
